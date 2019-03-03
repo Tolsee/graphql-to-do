@@ -1,0 +1,39 @@
+{
+  "name": "graphql-server",
+  "version": "0.0.1",
+  "description": "GraphQL server for to-do application",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "npm run serve",
+    "serve": "node dist/index.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch:ts\" \"npm run watch:node\"",
+    "watch:ts": "tsc -w",
+    "watch:node": "nodemon dist/index.js",
+    "build": "tsc",
+    "lint": "tslint ./src/**/*.ts",
+    "lint:fix": "tslint --fix ./src/**/*.ts -t verbose",
+    "tsc": "tsc"
+  },
+  "keywords": [
+    "graphql",
+    "typescript",
+    "apollo"
+  ],
+  "author": "Tulsi Sapkota",
+  "license": "ISC",
+  "dependencies": {
+    "@types/graphql": "^14.0.7",
+    "apollo-server": "^2.4.8",
+    "graphql": "^14.1.1",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.4.16"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.3333"
+  }
+}
