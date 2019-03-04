@@ -1,41 +1,32 @@
-import { ApolloServer, gql, ServerInfo } from "apollo-server";
+import {ApolloServer, gql, ServerInfo} from 'apollo-server';
+import {merge} from 'lodash';
 
-interface Book {
-    author: string;
-    title: string;
-}
+/**
+ * Resolvers
+ */
+import item from 'types/item/item.resolver';
+import date from 'utils/dateResolver';
 
-const books: Array<Book> = [
-    {
-        author: 'J.K. Rowling',
-        title: 'Harry Potter and the Chamber of Secrets',
-    },
-    {
-        author: 'Michael Crichton',
-        title: 'Jurassic Park',
-    },
-];
+import connectDb from 'utils/db';
+import loadTypeSchema from 'utils/loadTypeSchema';
 
-const typeDefs: any = gql`
-    type Book {
-        title: String
-        author: String
-    }
+const types: Array<string> = [ 'item' ];
 
-    type Query {
-        books: [Book]
+const rootSchema = gql`
+    schema {
+        query: Query
+        mutation: Mutation
     }
 `;
 
-const resolvers = {
-    Query: {
-        books: () => books,
-    },
-};
-
 const start = async () => {
-    const server = new ApolloServer({typeDefs: typeDefs, resolvers: resolvers});
+    const typeDefs = await Promise.all(types.map( type => loadTypeSchema(type)));
+    const server = new ApolloServer({
+        typeDefs: [rootSchema, ...(typeDefs.map(typeDef => gql(typeDef)))],
+        resolvers: merge({}, date, item)
+    });
 
+    await connectDb();
     await server.listen().then((info: ServerInfo) => {
         // tslint:disable-next-line:no-console
         console.log(`🚀  Server ready at ${info.url}`);

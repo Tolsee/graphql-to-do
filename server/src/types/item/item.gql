@@ -1,0 +1,35 @@
+scalar Date
+
+type Item {
+    _id: ID!
+    title: String!
+    body: String
+    startedAt: Date
+    completeDate: Date
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+type Query {
+    item(id: ID!): Item
+    items: [Item]
+}
+
+input NewItemInput {
+    title: String!
+    body: String
+    startedAt: Date
+    completeDate: Date
+}
+
+input UpdateItemInput {
+    title: String
+    body: String
+    startedAt: Date
+    completeDate: Date
+}
+
+type Mutation {
+    newItem(input: NewItemInput): Item!
+    updateItem(id: ID!, input: UpdateItemInput): Item!
+}

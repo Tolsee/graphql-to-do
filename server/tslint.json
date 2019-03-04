@@ -13,6 +13,7 @@
       true,
       "never"
     ],
+    "object-literal-sort-keys": false,
     "only-arrow-functions": false,
     "interface-name": false,
     "max-classes-per-file": false,
@@ -22,6 +23,7 @@
     "semicolon": [
       true,
       "always"
-    ]
+    ],
+    "quotemark": [true, "single"]
   }
 }

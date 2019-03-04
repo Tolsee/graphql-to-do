@@ -1,0 +1,7 @@
+# Webstorm config
+.idea
+
+node_modules
+
+# Build files
+dist
