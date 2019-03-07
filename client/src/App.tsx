@@ -19,7 +19,7 @@ class App extends Component {
   render() {
     return (
         <ApolloProvider client={client}>
-
+            <div>Nothing to show!</div>
         </ApolloProvider>
     );
   }

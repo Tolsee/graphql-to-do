@@ -1,6 +1,8 @@
 import React from 'react';
+import Typography from "antd/lib/typography";
+import 'antd/lib/typography/style/index.css';
+
 import { BlockProps } from "antd/lib/typography/Base";
-import { Typography } from "antd";
 
 const { Title } = Typography;
 
