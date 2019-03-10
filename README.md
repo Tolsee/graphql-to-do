@@ -1,4 +1,4 @@
-# graph-to-do
+# Grapgql based To-Do App
 Todo Application made with node.js, apollo, react.js
 
 # Todo
