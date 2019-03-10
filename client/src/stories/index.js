@@ -9,9 +9,11 @@ import { storiesOf } from '@storybook/react';
 
 // Todo
 // Change to relative import
-import { H1, H2, H3, H4 } from '../components/common/typo';
+import { H1, H2, H3, H4 } from 'components/common/typo';
 
-import Todo from '../components/todo';
+import Todo from 'components/item';
+
+import Board from 'components/board';
 
 storiesOf('Typography', module)
   .add('H1', () => <H1>Header 1</H1>)
@@ -23,3 +25,10 @@ storiesOf('Typography', module)
 storiesOf('Todos', module)
   .add('Loading Todo component', () => <Todo loading={true} title="Loading Todo Title" description="Loading Todo Description" />)
   .add('Todo component', () => <Todo loading={false} title="Todo Title" description="Todo Description" />);
+
+const items = [
+  { _id: 'asdasd', title: 'First Title', body: 'asjdhajkhsd' }
+];
+
+storiesOf('Board', module)
+  .add('Todo Board', () => <Board name={'TODO'} items={items} />);

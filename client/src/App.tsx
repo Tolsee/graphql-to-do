@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import { ApolloProvider } from "react-apollo";
 
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
+
+import GlobalStyle from './GlobalStyle';
+
+import BoardContainer from 'components/board/Container';
+import Board from 'containers/Board';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -15,14 +20,26 @@ const client = new ApolloClient({
     link
 });
 
-class App extends Component {
-  render() {
-    return (
+const boards = [
+    'todo',
+    'progress',
+    'complete'
+];
+
+const App = () => (
+    <Fragment>
+        <GlobalStyle />
         <ApolloProvider client={client}>
-            <div>Nothing to show!</div>
+            <BoardContainer>
+                {
+                    boards.map(name => (
+                        // @ts-ignore
+                        <Board key={name} name={name} />
+                    ))
+                }
+            </BoardContainer>
         </ApolloProvider>
-    );
-  }
-}
+    </Fragment>
+);
 
 export default App;
