@@ -4,6 +4,7 @@ type Item {
     _id: ID!
     title: String!
     body: String
+    state: String
     startedAt: Date
     completeDate: Date
     createdAt: Date!
@@ -12,7 +13,7 @@ type Item {
 
 type Query {
     item(id: ID!): Item
-    items: [Item]
+    items(state: String): [Item]
 }
 
 input NewItemInput {
@@ -25,6 +26,7 @@ input NewItemInput {
 input UpdateItemInput {
     title: String
     body: String
+    state: String
     startedAt: Date
     completeDate: Date
 }

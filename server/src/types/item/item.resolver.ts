@@ -7,8 +7,8 @@ export default {
                 .lean()
                 .exec()
         ,
-        items: () =>
-            Item.find({})
+        items: (_, args: any) =>
+            Item.find(args.state ? { state: args.state } : {})
                 .lean()
                 .exec()
     },

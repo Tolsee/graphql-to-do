@@ -9,6 +9,11 @@ const itemSchema = new Schema(
         body: {
             type: String,
             required: true
+        },
+        state: {
+            type: String,
+            enum: ['todo', 'progress', 'complete'],
+            default: 'todo'
         }
     },
     { timestamps: true }
