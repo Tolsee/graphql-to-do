@@ -76,7 +76,7 @@ const Board = (props: BoardParams) => {
                 <ItemWrapper>
                     {
                         loading ?
-                            emptyItems.map(prop => <Item {...prop} />) :
+                            emptyItems.map(prop => <Item key={prop._id} {...prop} />) :
                             items.map(({ _id, title, body }) => (
                                 <Item key={_id} _id={_id} loading={false} title={title} body={body} />
                             ))

@@ -29,9 +29,6 @@ type containerProps = {
 }
 const Container = ({ children }: containerProps) => (
     <Wrapper>
-        <Header>
-            <H1>GraphQl - TO DO List</H1>
-        </Header>
         <Menu>
             <AddItem />
         </Menu>
