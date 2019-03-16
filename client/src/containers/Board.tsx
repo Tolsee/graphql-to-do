@@ -47,10 +47,9 @@ export default ({ name }: BoardProps) => (
         { updateItem => (
             <Query query={GET_ITEMS} variables={{state: name}}>
                 {({data, loading, error}) => {
-                    if (loading) return <div>Loading</div>;
                     if (error) return <p>ERROR</p>;
                     return (
-                        <Board name={name} items={data.items} updateItem={updateItem}/>
+                        <Board loading={loading} name={name} items={data.items} updateItem={updateItem}/>
                     )
                 }}
             </Query>

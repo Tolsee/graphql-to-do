@@ -11,8 +11,8 @@ const StyledHeading = styled(H3)`
 `;
 
 const Header = styled.div`
-  padding: 5px 0;
-  text-align: center; 
+  padding: 5px 0 0 5px;
+  text-align: left; 
 `;
 
 const ItemWrapper = styled.div`
@@ -24,21 +24,31 @@ const ItemWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  border: 1px solid #e8e8e8;
+  background-color: #eee;
   border-radius: 5px;
   padding: 0 16px;
 `;
 
 const titlize = (str: string) => str[0].toUpperCase() + str.substr(1);
 
+const emptyItems = [
+    {
+        loading: true,
+        _id: 'empty',
+        title: 'empty',
+        body: 'empty'
+    }
+];
+
 type BoardParams = {
+    loading: boolean;
     name: string;
     updateItem: Function;
     items: Array<ItemProps>;
 }
 
 const Board = (props: BoardParams) => {
-    const { items, name } = props;
+    const { loading, items, name } = props;
 
     const onDragOver = (event: React.DragEvent) => {
         event.preventDefault();
@@ -54,8 +64,10 @@ const Board = (props: BoardParams) => {
     return (
         <Col
             span={8}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
+            {...!loading && {
+                onDragOver: onDragOver,
+                onDrop: onDrop
+            }}
         >
             <Wrapper>
                 <Header>
@@ -63,10 +75,11 @@ const Board = (props: BoardParams) => {
                 </Header>
                 <ItemWrapper>
                     {
-                        // @ts-ignore
-                        items.map(({ _id, title, body }) => (
-                            <Item key={_id} _id={_id} loading={false} title={title} description={body} />
-                        ))
+                        loading ?
+                            emptyItems.map(prop => <Item {...prop} />) :
+                            items.map(({ _id, title, body }) => (
+                                <Item key={_id} _id={_id} loading={false} title={title} body={body} />
+                            ))
                     }
                 </ItemWrapper>
             </Wrapper>
