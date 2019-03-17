@@ -20,7 +20,7 @@ const client = new ApolloClient({
     link
 });
 
-const boards = [
+export const boards = [
     'todo',
     'progress',
     'complete'

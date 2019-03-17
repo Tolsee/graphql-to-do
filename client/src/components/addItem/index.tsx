@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import Modal from 'antd/lib/modal';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import Button from 'antd/lib/button';
-import Input from 'antd/lib/input';
 
+import Input from 'antd/lib/input';
 import 'antd/lib/modal/style/index.css';
 import 'antd/lib/form/style/index.css';
 import 'antd/lib/button/style/index.css';
@@ -54,6 +55,12 @@ const AddForm = (props: AddItemFormProps) => {
 };
 
 const AddItemForm = Form.create({ name: 'add-item' })(AddForm);
+
+const AddItemButton = styled(Button)`
+  && {
+    width: 100%;
+  }
+`;
 
 type AddItemProps = {
     handleSubmit: Function;
@@ -108,9 +115,9 @@ const AddItem = (props: AddItemProps) => {
 
     return (
         <div>
-            <Button type="primary" onClick={showModal}>
-                Add Todo
-            </Button>
+            <AddItemButton type="dashed" icon="plus" onClick={showModal}>
+                Add Item
+            </AddItemButton>
             <Modal
                 centered={true}
                 title="Add Item"

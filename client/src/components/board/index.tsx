@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Col from 'antd/lib/grid/col';
 import { H3 } from 'components/common/typo';
 import Item, { ItemProps } from 'components/item';
+import { NoData, Error } from 'components/common';
 
 const StyledHeading = styled(H3)`
   && {
@@ -41,6 +42,7 @@ const emptyItems = [
 ];
 
 type BoardParams = {
+    error: any;
     loading: boolean;
     name: string;
     updateItem: Function;
@@ -48,7 +50,7 @@ type BoardParams = {
 }
 
 const Board = (props: BoardParams) => {
-    const { loading, items, name } = props;
+    const { error, loading, items, name } = props;
 
     const onDragOver = (event: React.DragEvent) => {
         event.preventDefault();
@@ -75,11 +77,18 @@ const Board = (props: BoardParams) => {
                 </Header>
                 <ItemWrapper>
                     {
-                        loading ?
-                            emptyItems.map(prop => <Item key={prop._id} {...prop} />) :
-                            items.map(({ _id, title, body }) => (
-                                <Item key={_id} _id={_id} loading={false} title={title} body={body} />
-                            ))
+                        error && <Error message="Can not fetch data" />
+                    }
+                    {
+                        !error && (loading ?
+                                emptyItems.map(prop => <Item key={prop._id} {...prop} />) :
+                                items && (
+                                    items.length ? items.map(({ _id, title, body }) => (
+                                        <Item key={_id} _id={_id} loading={false} title={title} body={body} />
+                                    )) :
+                                    <NoData description="No items" />
+                                )
+                        )
                     }
                 </ItemWrapper>
             </Wrapper>

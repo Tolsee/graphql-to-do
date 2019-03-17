@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { error, success } from 'components/common';
 
 import AddItem from 'components/addItem';
 import { GET_ITEMS } from 'containers/Board';
@@ -19,7 +20,6 @@ const AddItemContainer = () => (
     <Mutation
         mutation={ADD_ITEM}
         update={(cache, { data: { newItem } }) => {
-            console.log('New Item: ', newItem);
             // @ts-ignore
             const { items } = cache.readQuery({ query: GET_ITEMS, variables: { state: 'todo' } });
             cache.writeQuery({
@@ -27,7 +27,9 @@ const AddItemContainer = () => (
                 variables: { state: 'todo' },
                 data: { items: items.concat([newItem]) },
             });
+            success('Item added successfully');
         }}
+        onError={apolloError => error(apolloError.message)}
     >
         {addTodo => (
             // @ts-ignore
