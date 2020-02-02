@@ -1,7 +1,20 @@
-# Grapgql based To-Do App
-Todo Application made with node.js, apollo, react.js
+# Kanban Board
 
-# Todo
-- Add install guide
-- Update readme for both client and server
+## Technology Used
+  - **Backend:** Node.js
+  - **Frontend:** React.js
+  - :muscle: **Apollo** Everywhere
+  - **Database:** MongoDB
 
+## How to run?
+### Server
+```
+$ cd server
+$ npm run watch
+```
+
+### Client
+```
+$ cd client
+$ npm start
+```
