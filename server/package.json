@@ -26,9 +26,9 @@
     "@types/graphql": "^14.0.7",
     "@types/lodash": "^4.14.121",
     "@types/mongoose": "^5.3.20",
-    "apollo-server": "^2.4.8",
+    "apollo-server": "^2.9.0",
     "graphql": "^14.1.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "mongoose": "^5.4.16"
   },
   "devDependencies": {

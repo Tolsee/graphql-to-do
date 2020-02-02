@@ -1,0 +1,26 @@
+type Board {
+    _id: ID!
+    name: String!
+    items: [Item]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+extend type Query {
+    board(id: ID!): Board
+    boards: [Board]
+}
+
+input NewBoard {
+    name: String!
+}
+
+input UpdateBoard {
+    name: String
+}
+
+extend type Mutation {
+    newBoard(input: NewBoard): Board!
+    updateBoard(id: ID!, input: UpdateBoard): Board!
+    deleteBoard(id: ID!): Board
+}

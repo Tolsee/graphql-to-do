@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, SchemaTypes } from 'mongoose';
 
 const itemSchema = new Schema(
     {
@@ -9,6 +9,11 @@ const itemSchema = new Schema(
         body: {
             type: String,
             required: true
+        },
+        board: {
+            type: SchemaTypes.ObjectId,
+            required: true,
+            ref: 'board'
         },
         state: {
             type: String,

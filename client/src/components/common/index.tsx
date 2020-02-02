@@ -14,7 +14,11 @@ type noDataProps = {
     description: string;
 };
 
-export const NoData = ({ description }: noDataProps) => <Empty description={<span>{description}</span>} />;
+const Desc = styled.span`
+  color: ${({ theme: {textColor} }) => textColor};
+`;
+
+export const NoData = ({ description }: noDataProps) => <Empty description={<Desc>{description}</Desc>} />;
 
 const ErrorIcon = styled(Icon)`
   && {

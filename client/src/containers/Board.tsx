@@ -1,21 +1,22 @@
 import React from 'react';
-import { Query, Mutation } from 'react-apollo';
+import {Query, Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
-import { boards } from 'App';
-import Board from 'components/board';
+import Board from 'components/Board';
 
 export const GET_ITEMS = gql`
-    query itemList($state: String) {
-        items(state: $state) {
-            _id,
-            title,
-            body
+    query boardItems($board: ID!) {
+        board(id: $board) {
+            items {
+                _id,
+                title,
+                body
+            }
         }
     }
 `;
 
 const UPDATE_ITEM = gql`
-    mutation updateList($id: ID!, $input: UpdateItemInput) {
+    mutation updateItem($id: ID!, $input: UpdateItemInput) {
         updateItem(id: $id, input: $input) {
             _id,
             title,
@@ -25,10 +26,12 @@ const UPDATE_ITEM = gql`
 `;
 
 type BoardProps = {
+    _id: string;
     name: string;
+    boards: Array<{ _id: string }>
 };
 
-export default ({ name }: BoardProps) => (
+export default ({ _id: board, name, boards }: BoardProps) => (
     <Mutation
         mutation={UPDATE_ITEM}
         // @ts-ignore
@@ -37,42 +40,47 @@ export default ({ name }: BoardProps) => (
             /**
              * Update currently updated board
              */
+                // @ts-ignore
+            const { board: currentBoard } = cache.readQuery({ query: GET_ITEMS, variables: { board } });
             // @ts-ignore
-            const { items } = cache.readQuery({ query: GET_ITEMS, variables: { state: name } });
-            // @ts-ignore
-            const newItems = [...items.filter(({ _id }) => _id !== updateItem._id), updateItem];
+            const newItems = [...currentBoard.items.filter(({ _id }) => _id !== updateItem._id), updateItem];
 
             cache.writeQuery({
                 query: GET_ITEMS,
-                variables: { state: name },
-                data: { items: newItems },
+                variables: { board },
+                data: { board: { ...currentBoard, items: newItems } },
             });
 
             /**
              * Update other boards
              */
-            // @ts-ignore
-            const remainingBoards = boards.filter(board => board !== name);
-            remainingBoards.forEach(board => {
-                const data = cache.readQuery({ query: GET_ITEMS, variables: { state: board } });
+                // @ts-ignore
+            const remainingBoards = boards.filter(({ _id }) => _id !== board);
+            remainingBoards.forEach(({ _id: currentBoardId }) => {
+                // @ts-ignore
+                const { board: currentBoardData } = cache.readQuery({ query: GET_ITEMS, variables: { board: currentBoardId } });
                 cache.writeQuery({
                     query: GET_ITEMS,
-                    variables: { state: board },
-                    // @ts-ignore
-                    data: { items: data && data.items.filter(({ _id }) => _id !== updateItem._id)},
+                    variables: {board: currentBoardId},
+                    data: {
+                        board: {
+                            ...currentBoardData,
+                            // @ts-ignore
+                            items: (currentBoardData && currentBoardData.items) ? currentBoardData.items.filter(({_id}) => _id !== updateItem._id) : []
+                        }
+                    }
                 });
             });
-
-        }}
-    >
+        }}>
         { updateItem => (
-            <Query query={GET_ITEMS} variables={{state: name}}>
+            <Query query={GET_ITEMS} variables={{board}}>
                 {({data, loading, error }) => (
                     <Board
+                        _id={board}
                         loading={loading}
                         error={error}
                         name={name}
-                        items={data && data.items}
+                        items={data && data.board && data.board.items}
                         updateItem={updateItem}
                     />
                 )}

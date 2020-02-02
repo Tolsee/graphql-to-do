@@ -6,7 +6,8 @@
     "strict": true,
     "baseUrl": "src",
     "moduleResolution": "node",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts"

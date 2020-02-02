@@ -1,14 +1,17 @@
-import React, { Fragment } from 'react';
+import React, { useContext, Fragment } from 'react';
 import { ApolloProvider } from "react-apollo";
 
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 
-import GlobalStyle from './GlobalStyle';
+import { ThemeProvider } from "styled-components";
+import { GlobalStyle, getCurrentTheme } from 'styledConfig';
 
-import BoardContainer from 'components/board/Container';
-import Board from 'containers/Board';
+import AppLayout from 'components/Layout';
+import BoardContainer from 'containers/BoardContainer';
+
+import { AppContext, AppStore } from 'store/App';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -20,26 +23,28 @@ const client = new ApolloClient({
     link
 });
 
-export const boards = [
-    'todo',
-    'progress',
-    'complete'
-];
+function App() {
+   const { mode } = useContext(AppContext);
 
-const App = () => (
-    <Fragment>
-        <GlobalStyle />
-        <ApolloProvider client={client}>
-            <BoardContainer>
-                {
-                    boards.map(name => (
-                        // @ts-ignore
-                        <Board key={name} name={name} />
-                    ))
-                }
-            </BoardContainer>
-        </ApolloProvider>
-    </Fragment>
-);
+   return (
+       <ThemeProvider theme={getCurrentTheme(mode)}>
+           <Fragment>
+               <GlobalStyle/>
+               <ApolloProvider client={client}>
+                   <AppLayout>
+                       <BoardContainer/>
+                   </AppLayout>
+               </ApolloProvider>
+           </Fragment>
+       </ThemeProvider>
+   )
+}
 
-export default App;
+export default function AppWithTheme() {
+    return (
+        <AppStore>
+            <App />
+        </AppStore>
+    );
+}
+

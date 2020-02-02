@@ -4,7 +4,7 @@ type Item {
     _id: ID!
     title: String!
     body: String
-    state: String
+    board: Board!
     startedAt: Date
     completeDate: Date
     createdAt: Date!
@@ -19,6 +19,7 @@ type Query {
 input NewItemInput {
     title: String!
     body: String
+    board: ID!
     startedAt: Date
     completeDate: Date
 }
@@ -26,7 +27,7 @@ input NewItemInput {
 input UpdateItemInput {
     title: String
     body: String
-    state: String
+    board: ID
     startedAt: Date
     completeDate: Date
 }
@@ -34,4 +35,5 @@ input UpdateItemInput {
 type Mutation {
     newItem(input: NewItemInput): Item!
     updateItem(id: ID!, input: UpdateItemInput): Item!
+    deleteItem(id: ID): Item!
 }

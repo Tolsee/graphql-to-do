@@ -3,12 +3,12 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { error, success } from 'components/common';
 
-import AddItem from 'components/addItem';
+import AddItem from 'components/AddItem';
 import { GET_ITEMS } from 'containers/Board';
 
 const ADD_ITEM = gql`
-    mutation AddItem($title: String!, $body: String) {
-        newItem(input: { title: $title, body: $body }) {
+    mutation AddItem($title: String!, $body: String, $board: ID!) {
+        newItem(input: { title: $title, body: $body, board: $board }) {
             _id,
             title,
             body
@@ -16,16 +16,20 @@ const ADD_ITEM = gql`
     }
 `;
 
-const AddItemContainer = () => (
+type addItemProps = {
+    board: string;
+};
+
+const AddItemContainer = ({ board }: addItemProps) => (
     <Mutation
         mutation={ADD_ITEM}
         update={(cache, { data: { newItem } }) => {
             // @ts-ignore
-            const { items } = cache.readQuery({ query: GET_ITEMS, variables: { state: 'todo' } });
+            const { board: { items } } = cache.readQuery({ query: GET_ITEMS, variables: { board: board } });
             cache.writeQuery({
                 query: GET_ITEMS,
-                variables: { state: 'todo' },
-                data: { items: items.concat([newItem]) },
+                variables: { board: board },
+                data: { board: { items: items.concat([newItem]) } },
             });
             success('Item added successfully');
         }}
@@ -34,7 +38,7 @@ const AddItemContainer = () => (
         {addTodo => (
             // @ts-ignore
             <AddItem handleSubmit={fields => {
-                addTodo({ variables: fields });
+                addTodo({ variables: { ...fields, board } });
             }} />
         )}
     </Mutation>

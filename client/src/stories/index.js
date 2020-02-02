@@ -9,11 +9,11 @@ import { storiesOf } from '@storybook/react';
 
 // Todo
 // Change to relative import
-import { H1, H2, H3, H4 } from 'components/common/typo';
+import { H1, H2, H3, H4 } from 'components/common/bypo';
 
-import Todo from 'components/item';
+import Todo from 'components/Item';
 
-import Board from 'components/board';
+import Board from 'components/Board';
 
 storiesOf('Typography', module)
   .add('H1', () => <H1>Header 1</H1>)

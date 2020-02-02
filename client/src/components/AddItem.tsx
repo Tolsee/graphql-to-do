@@ -10,6 +10,8 @@ import 'antd/lib/form/style/index.css';
 import 'antd/lib/button/style/index.css';
 import 'antd/lib/input/style/index.css';
 
+const { TextArea } = Input;
+
 interface AddItemFormProps extends FormComponentProps {
     onFieldChange: Function;
     validate: Function;
@@ -20,32 +22,29 @@ const AddForm = (props: AddItemFormProps) => {
     props.validate(validateFields);
 
     const formItemLayout = {
-        labelCol: {
-            xs: { span: 24 },
-            sm: { span: 8 },
-        },
         wrapperCol: {
-            xs: { span: 24 },
-            sm: { span: 16 },
+            xs: { span: 24 }
         },
     };
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label='title'>
+            <Form.Item>
                 {getFieldDecorator('title', {
                     rules: [{ required: true, message: 'Please enter Title!' }],
                 })(
                     <Input
                         type="text"
+                        placeholder="Title"
                         onChange={onFieldChange('title')}
                     />
                 )}
             </Form.Item>
-            <Form.Item label='body'>
+            <Form.Item>
                 {getFieldDecorator('body', {})(
-                    <Input
-                        type="text"
+                    <TextArea
+                        rows={4}
+                        placeholder="Description.."
                         onChange={onFieldChange('body')}
                     />
                 )}
@@ -58,7 +57,22 @@ const AddItemForm = Form.create({ name: 'add-item' })(AddForm);
 
 const AddItemButton = styled(Button)`
   && {
-    width: 100%;
+    height: 24px;
+    width: 24px;
+    border-color: ${({theme: { colors }}) => colors.grey_6};
+    &&:hover {
+      i {
+        color: ${({theme: { colors }}) => colors.primary};
+      }
+    }
+    i {
+      color: ${({theme: { colors }}) => colors.grey_6};
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      svg {
+        height: 12px;
+        width: 12px;
+      } 
+    }
   }
 `;
 
@@ -115,9 +129,7 @@ const AddItem = (props: AddItemProps) => {
 
     return (
         <div>
-            <AddItemButton type="dashed" icon="plus" onClick={showModal}>
-                Add Item
-            </AddItemButton>
+            <AddItemButton ghost shape="circle" icon="plus" onClick={showModal} />
             <Modal
                 centered={true}
                 title="Add Item"
